@@ -12,13 +12,17 @@ export const sendEmail = async (
     port: 465,
     secure: true,
     auth: {
-      user: 'edududuacardoso@gmail.com',
-      pass: 'nbfjnmogdgdckffv',
+      user: process.env.USER_GOOGLE,
+      pass: process.env.PASS_GOOGLE,
     },
   });
   const { email, name } = req.body;
 
   const user = prismaClient.user.findFirst({ where: { name } });
+
+  if (!user) {
+    return;
+  }
 
   transport
     .sendMail({
